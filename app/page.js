@@ -60,7 +60,7 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto mt-16 space-y-10">
         {/* Search */}
-        <div className="relative max-w-md w-full">
+        <div className="relative top-2.5 max-w-md w-full">
           <svg
             className="absolute left-4 top-3.5 h-5 w-5 text-gray-400"
             fill="none"
@@ -78,7 +78,7 @@ export default function Home() {
             placeholder="Search name, email, or department"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-12 pr-4 py-2 rounded-lg bg-white text-black placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-md"
+            className="pl-12 pr-4 py-2   rounded-lg bg-white text-black placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-md"
           />
         </div>
 
