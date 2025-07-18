@@ -1,7 +1,16 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Star, StarOff, Eye, Bookmark, BookmarkX, TrendingUp } from 'lucide-react';
-import { useRouter } from "next/navigation";
+import {
+  Star,
+  StarOff,
+  Eye,
+  Bookmark,
+  BookmarkX,
+  TrendingUp,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export default function UserCard({ user, onBookmark }) {
   const { firstName, lastName, email, age, department, rating } = user;
@@ -10,27 +19,31 @@ export default function UserCard({ user, onBookmark }) {
 
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  // Check on mount if already bookmarked
   useEffect(() => {
-    const existing = JSON.parse(localStorage.getItem("bookmarkedUsers")) || [];
-    setIsBookmarked(existing.some(u => u.id === user.id));
+    const existing = JSON.parse(localStorage.getItem('bookmarkedUsers')) || [];
+    setIsBookmarked(existing.some((u) => u.id === user.id));
   }, [user.id]);
 
   const toggleBookmark = () => {
-    const existing = JSON.parse(localStorage.getItem("bookmarkedUsers")) || [];
+    const existing = JSON.parse(localStorage.getItem('bookmarkedUsers')) || [];
 
     if (isBookmarked) {
-      // Remove from bookmarks
-      const updated = existing.filter(u => u.id !== user.id);
-      localStorage.setItem("bookmarkedUsers", JSON.stringify(updated));
+      const updated = existing.filter((u) => u.id !== user.id);
+      localStorage.setItem('bookmarkedUsers', JSON.stringify(updated));
     } else {
-      // Add to bookmarks
       const updated = [...existing, user];
-      localStorage.setItem("bookmarkedUsers", JSON.stringify(updated));
+      localStorage.setItem('bookmarkedUsers', JSON.stringify(updated));
     }
 
     setIsBookmarked(!isBookmarked);
     if (onBookmark) onBookmark();
+  };
+
+  const handlePromote = () => {
+    toast.success(`${fullName} has been promoted! 🚀`, {
+      description: 'They’re now one step closer to greatness.',
+      duration: 4000,
+    });
   };
 
   return (
@@ -46,7 +59,11 @@ export default function UserCard({ user, onBookmark }) {
 
       <div className="flex items-center gap-[2px] mb-5 text-yellow-400 text-xl">
         {[...Array(5)].map((_, i) =>
-          i < rating ? <Star key={i} size={20} fill="currentColor" strokeWidth={1.5} /> : <StarOff key={i} size={20} strokeWidth={1.5} />
+          i < rating ? (
+            <Star key={i} size={20} fill="currentColor" strokeWidth={1.5} />
+          ) : (
+            <StarOff key={i} size={20} strokeWidth={1.5} />
+          )
         )}
       </div>
 
@@ -73,7 +90,10 @@ export default function UserCard({ user, onBookmark }) {
           )}
         </button>
 
-        <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-800/40 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 transition">
+        <button
+          onClick={handlePromote}
+          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-800/40 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 transition"
+        >
           <TrendingUp size={16} /> Promote
         </button>
       </div>
