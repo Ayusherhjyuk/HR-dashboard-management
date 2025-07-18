@@ -6,7 +6,7 @@ import UserCard from "./components/UserCard";
 import Navbar from "./components/Navbar";
 import departments from "./utils/departments";
 import ratings from "./utils/ratings";
-import { Input } from "./ui/input";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const [allUsers, setAllUsers] = useState([]);

@@ -1,10 +1,37 @@
 'use client';
-import React from 'react';
-import { Star, StarOff, Eye, Bookmark, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Star, StarOff, Eye, Bookmark, BookmarkX, TrendingUp } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
-export default function UserCard({ user }) {
+export default function UserCard({ user, onBookmark }) {
   const { firstName, lastName, email, age, department, rating } = user;
   const fullName = `${firstName} ${lastName}`;
+  const router = useRouter();
+
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  // Check on mount if already bookmarked
+  useEffect(() => {
+    const existing = JSON.parse(localStorage.getItem("bookmarkedUsers")) || [];
+    setIsBookmarked(existing.some(u => u.id === user.id));
+  }, [user.id]);
+
+  const toggleBookmark = () => {
+    const existing = JSON.parse(localStorage.getItem("bookmarkedUsers")) || [];
+
+    if (isBookmarked) {
+      // Remove from bookmarks
+      const updated = existing.filter(u => u.id !== user.id);
+      localStorage.setItem("bookmarkedUsers", JSON.stringify(updated));
+    } else {
+      // Add to bookmarks
+      const updated = [...existing, user];
+      localStorage.setItem("bookmarkedUsers", JSON.stringify(updated));
+    }
+
+    setIsBookmarked(!isBookmarked);
+    if (onBookmark) onBookmark();
+  };
 
   return (
     <div className="bg-gradient-to-br from-white/60 via-white/30 to-white/10 dark:from-gray-800/60 dark:to-gray-700/30 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl hover:shadow-indigo-400/40 transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.03] w-full max-w-sm mx-auto">
@@ -24,12 +51,28 @@ export default function UserCard({ user }) {
       </div>
 
       <div className="flex justify-between mt-2 text-sm font-medium">
-        <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-800/40 text-indigo-800 dark:text-indigo-200 hover:bg-indigo-500 transition">
+        <button
+          onClick={() => router.push(`/employee/${user.id}`)}
+          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-800/40 text-indigo-800 dark:text-indigo-200 hover:bg-indigo-500 transition"
+        >
           <Eye size={16} /> View
         </button>
-        <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-800/40 text-amber-800 dark:text-amber-200 hover:bg-amber-200 transition">
-          <Bookmark size={16} /> Bookmark
+
+        <button
+          onClick={toggleBookmark}
+          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-800/40 text-amber-800 dark:text-amber-200 hover:bg-amber-200 transition"
+        >
+          {isBookmarked ? (
+            <>
+              <BookmarkX size={16} /> Bookmarked
+            </>
+          ) : (
+            <>
+              <Bookmark size={16} /> Bookmark
+            </>
+          )}
         </button>
+
         <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-800/40 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 transition">
           <TrendingUp size={16} /> Promote
         </button>
