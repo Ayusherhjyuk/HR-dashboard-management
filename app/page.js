@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import UserCard from './components/UserCard';
 import Navbar from './components/Navbar';
+
 import departments from './utils/departments';
 import ratings from './utils/ratings';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
+import ProtectedRoute from './components/ProtectedRoute';
 import {
   Flame,
   Search,
@@ -104,6 +106,7 @@ const FloatingIcon = ({ Icon, top, left, delay }) => (
 
 
   return (
+    <ProtectedRoute>
     <main className="min-h-screen bg-gradient-to-br from-[#0f172a] to-[#020617] text-white px-6 pb-20 overflow-hidden relative">
       <Navbar />
 
@@ -247,5 +250,6 @@ const FloatingIcon = ({ Icon, top, left, delay }) => (
         </>
       )}
     </main>
+    </ProtectedRoute>
   );
 }
