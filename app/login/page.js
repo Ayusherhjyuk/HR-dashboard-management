@@ -17,7 +17,7 @@ export default function LoginPage() {
     if (user) {
       router.replace('/'); 
     }
-  }, [user]);
+  }, [user, router]);
 
   const handleLogin = (e) => {
     e.preventDefault();

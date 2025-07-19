@@ -85,7 +85,7 @@ export default function BookmarksPage() {
             Legendary Bookmarks
           </motion.h1>
           <p className="mt-3 text-lg text-gray-300 italic max-w-xl mx-auto">
-            💾 "The GOATs don’t wait – save ‘em or regret later." 🐐
+            💾 &quot;The GOATs don’t wait – save ‘em or regret later.&quot; 🐐
           </p>
         </motion.div>
 

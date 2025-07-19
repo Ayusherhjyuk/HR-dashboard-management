@@ -27,9 +27,9 @@ export default function Navbar() {
   💼 HR Dashboard
 </Link>
         <div className="flex gap-4 text-sm font-medium text-white">
-          <a href="/" className="hover:text-indigo-400 transition-colors">Home</a>
-          <a href="/bookmarks" className="hover:text-indigo-400 transition-colors">Bookmarks</a>
-          <a href="/analytics" className="hover:text-indigo-400 transition-colors">Analytics</a>
+          <Link href="/" className="hover:text-indigo-400 transition-colors">Home</Link>
+          <Link href="/bookmarks" className="hover:text-indigo-400 transition-colors">Bookmarks</Link>
+          <Link href="/analytics" className="hover:text-indigo-400 transition-colors">Analytics</Link>
         </div>
       </div>
     </nav>

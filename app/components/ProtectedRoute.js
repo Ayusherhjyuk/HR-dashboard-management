@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children }) {
     if (!loading && !user && pathname !== '/login') {
       router.push('/login');
     }
-  }, [user, loading, pathname]);
+  }, [user, loading, pathname, router]); // ✅ fixed here
 
   if (loading) return null;
 
