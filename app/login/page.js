@@ -1,5 +1,7 @@
 'use client';
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
@@ -8,19 +10,26 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/'); // ✅ already logged in? bounce to home
+    }
+  }, [user]);
 
   const handleLogin = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Allow any password but only emails ending with @hr.com
-  if (email.endsWith('@hr.com')) {
-    login({ name: 'HR User', email });
-    toast.success('Logged in successfully! 🎉');
-  } else {
-    toast.error('Email must be from HR domain (e.g. name@hr.com) ❌');
-  }
-};
+    if (email.endsWith('@hr.com')) {
+      login({ name: 'HR User', email });
+      toast.success('Logged in successfully! 🎉');
+      setTimeout(() => router.push('/'), 1000);
+    } else {
+      toast.error('Email must be from HR domain (e.g. name@hr.com) ❌');
+    }
+  };
 
   return (
     <div className="h-screen flex items-center justify-center bg-[#0b1120] text-white">
@@ -30,19 +39,15 @@ export default function LoginPage() {
       >
         <h2 className="text-3xl font-bold text-center">🔐 Login to HR Dashboard</h2>
 
-        {/* Email Field */}
-        <div className="relative">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-3 rounded bg-white/10 text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-indigo-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full p-3 rounded bg-white/10 text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-indigo-500"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-        {/* Password Field with toggle */}
         <div className="relative">
           <input
             type={showPassword ? 'text' : 'password'}
@@ -60,7 +65,6 @@ export default function LoginPage() {
           </span>
         </div>
 
-        {/* Login Button */}
         <button
           type="submit"
           className="w-full bg-indigo-600 hover:bg-indigo-700 transition-all p-3 rounded font-semibold text-white shadow-md"
@@ -68,7 +72,6 @@ export default function LoginPage() {
           Login
         </button>
 
-        {/* Test Credentials Display */}
         <div className="text-sm text-white/70 text-center mt-2">
           Try <span className="font-bold text-white">admin@hr.com</span> / <span className="font-bold text-white">admin123</span>
         </div>

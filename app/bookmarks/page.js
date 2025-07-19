@@ -61,11 +61,14 @@ export default function BookmarksPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white px-6 pb-20 font-mono">
-      <Navbar />
+    <main className="min-h-screen bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white px-6 pb-20 ">
+      
+      <nav className="pb-6"><Navbar /></nav>
+
 
       <motion.div
-        className="max-w-7xl mx-auto mt-20 space-y-10"
+        className="max-w-7xl mx-auto pt-22 space-y-10 font-mono"
+
         initial="hidden"
         animate="visible"
         variants={containerVariant}
