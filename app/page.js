@@ -87,22 +87,30 @@ export default function HomePage() {
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
   const handleCreateUser = () => {
-    const { firstName, lastName, email, age, department, rating } = newUser;
-    if (!firstName || !lastName || !email || !age || !department || !rating) return alert('Please fill all fields');
+  const { firstName, lastName, email, age, department, rating } = newUser;
+  if (!firstName || !lastName || !email || !age || !department || !rating) {
+    return alert('Please fill all fields');
+  }
 
-    const createdUser = {
-      ...newUser,
-      id: Date.now(),
-      age: Number(age),
-      rating: Number(rating)
-    };
-
-    const updatedUsers = [createdUser, ...allUsers];
-    setAllUsers(updatedUsers);
-    setFilteredUsers(updatedUsers);
-    setShowModal(false);
-    setNewUser({ firstName: '', lastName: '', email: '', age: '', department: '', rating: '' });
+  const createdUser = {
+    ...newUser,
+    id: Date.now(),
+    age: Number(age),
+    rating: Number(rating)
   };
+
+  // 🧠 Save to localStorage
+  const existing = JSON.parse(localStorage.getItem('createdUsers')) || [];
+  const updatedLocal = [createdUser, ...existing];
+  localStorage.setItem('createdUsers', JSON.stringify(updatedLocal));
+
+  const updatedUsers = [createdUser, ...allUsers];
+  setAllUsers(updatedUsers);
+  setFilteredUsers(updatedUsers);
+  setShowModal(false);
+  setNewUser({ firstName: '', lastName: '', email: '', age: '', department: '', rating: '' });
+};
+
 
   const FloatingIcon = ({ Icon, top, left, delay }) => (
     <motion.div
@@ -115,9 +123,11 @@ export default function HomePage() {
       <Icon className="w-[60px] h-[60px] drop-shadow-2xl transition-all duration-500" />
     </motion.div>
   );
+  
 
   return (
     <ProtectedRoute>
+      
       <main className="min-h-screen bg-gradient-to-br from-[#0f172a] to-[#020617] text-white px-6 pb-20 overflow-hidden relative">
         <Navbar />
 

@@ -75,21 +75,57 @@ export default function EmployeeDetail() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+  const fetchUser = async () => {
+    try {
+      // Check localStorage first
+      const localUsers = JSON.parse(localStorage.getItem("createdUsers")) || [];
+      const localUser = localUsers.find((u) => String(u.id) === String(id));
+
+      if (localUser) {
+        // Add mock data like you do for API
+        localUser.department ||= getRandomDepartment();
+        localUser.feedback = getMockFeedback(localUser.department);
+        localUser.rating = Math.floor(Math.random() * 5) + 1;
+        localUser.bio = getRandomBio();
+        localUser.history = getMockHistory();
+        localUser.projects = getMockProjects(localUser.department);
+
+        setUser(localUser);
+        return;
+      }
+
+      // Not in localStorage? Try API
       const res = await axios.get(`https://dummyjson.com/users/${id}`);
       const userData = res.data;
-      userData.department = getRandomDepartment(); // if you're mocking
+
+      // Add your fake props here too
+      userData.department = getRandomDepartment();
       userData.feedback = getMockFeedback(userData.department);
       userData.rating = Math.floor(Math.random() * 5) + 1;
       userData.bio = getRandomBio();
       userData.history = getMockHistory();
       userData.projects = getMockProjects(userData.department);
 
-      
       setUser(userData);
-    };
-    fetchUser();
-  }, [id]);
+    } catch (err) {
+      console.error('User not found ❌', err);
+      setUser({ notFound: true });
+    }
+  };
+
+  fetchUser();
+}, [id]);
+
+   if (user?.notFound) {
+  return (
+    <main className="min-h-screen flex items-center justify-center text-white bg-gradient-to-br from-[#0f172a] to-[#1e293b]">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold">User Not Found 😵</h1>
+        <p className="mt-2 text-gray-400">Try going back to the employee list.</p>
+      </div>
+    </main>
+  );
+}
 
   if (!user) return <div className="text-white p-10">Loading...</div>;
 
@@ -97,7 +133,7 @@ export default function EmployeeDetail() {
     <main className="min-h-screen bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white">
       <Navbar />
 
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto pt-30 px-6 py-8">
         <div className="bg-white/10 p-6 rounded-xl shadow-2xl backdrop-blur-md border border-white/10">
           <h1 className="text-3xl font-bold mb-2">{user.firstName} {user.lastName}</h1>
           <p className="text-sm text-gray-300 mb-4">{user.email}</p>
