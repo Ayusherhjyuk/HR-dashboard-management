@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      router.replace('/'); // ✅ already logged in? bounce to home
+      router.replace('/'); 
     }
   }, [user]);
 

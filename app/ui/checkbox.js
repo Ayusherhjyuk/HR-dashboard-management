@@ -1,4 +1,4 @@
-// app/ui/checkbox.js
+
 import React from "react";
 
 const Checkbox = React.forwardRef(({ className = "", ...props }, ref) => {

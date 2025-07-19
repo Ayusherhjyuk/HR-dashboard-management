@@ -6,7 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Star, StarOff } from 'lucide-react';
 import axios from 'axios';
-import { feedbackByDepartment } from '@/app/data/feedbackData'; // ⬅️ top of your file
+import { feedbackByDepartment } from '@/app/data/feedbackData'; 
 import projectData from '@/app/data/projectData';
 
 import Navbar from '@/app/components/Navbar';
@@ -77,12 +77,12 @@ export default function EmployeeDetail() {
   useEffect(() => {
   const fetchUser = async () => {
     try {
-      // Check localStorage first
+    
       const localUsers = JSON.parse(localStorage.getItem("createdUsers")) || [];
       const localUser = localUsers.find((u) => String(u.id) === String(id));
 
       if (localUser) {
-        // Add mock data like you do for API
+        
         localUser.department ||= getRandomDepartment();
         localUser.feedback = getMockFeedback(localUser.department);
         localUser.rating = Math.floor(Math.random() * 5) + 1;
@@ -94,11 +94,11 @@ export default function EmployeeDetail() {
         return;
       }
 
-      // Not in localStorage? Try API
+      
       const res = await axios.get(`https://dummyjson.com/users/${id}`);
       const userData = res.data;
 
-      // Add your fake props here too
+      
       userData.department = getRandomDepartment();
       userData.feedback = getMockFeedback(userData.department);
       userData.rating = Math.floor(Math.random() * 5) + 1;
@@ -183,7 +183,7 @@ export default function EmployeeDetail() {
             'Swiggy', 'TCS', 'CRED', 'Flipkart', 'Meesho',
           ];
 
-          // Start from the current year
+          
           let currentYear = new Date().getFullYear();
 
           return user.history
@@ -194,11 +194,11 @@ export default function EmployeeDetail() {
               const reversedIndex = user.history.length - 1 - index;
               const role = deptRoles[reversedIndex] || 'Associate';
 
-              const duration = Math.floor(Math.random() * 3) + 1; // 1 to 3 years
+              const duration = Math.floor(Math.random() * 3) + 1; 
               const startYear = currentYear - duration;
               const endYear = currentYear;
 
-              currentYear = startYear; // Update for next iteration
+              currentYear = startYear; 
 
               const company = randomCompanies[Math.floor(Math.random() * randomCompanies.length)];
 

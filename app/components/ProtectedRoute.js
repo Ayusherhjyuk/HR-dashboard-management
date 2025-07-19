@@ -14,7 +14,6 @@ export default function ProtectedRoute({ children }) {
     }
   }, [user, loading, pathname]);
 
-  // 🔁 wait until auth check is complete
   if (loading) return null;
 
   return children;
